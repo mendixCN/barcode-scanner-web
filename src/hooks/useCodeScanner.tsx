@@ -29,7 +29,7 @@ export const useCodeScanner: CodeScannerHook = (streamObject, videoElement) => {
 
         if (streamObject && videoElement) {
             const browserReader = new BrowserMultiFormatReader(hints, 2000);
-            browserReader.decodeOnceFromStream(streamObject, videoElement).then(result => {
+            browserReader.decodeOnceFromStream(streamObject, undefined).then(result => {
                 setCodeResult(result.getText())
             }).catch((e) => {
                 console.log(e);
