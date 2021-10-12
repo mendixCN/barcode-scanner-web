@@ -23,21 +23,15 @@ jobs:
                   cache-name: cache-node-modules
               with:
                   path: ~/.npm
-                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
             - name: "Defining Environment Variables"
               id: variables
               run: echo "::set-output name=tag::$(git tag --points-at HEAD)"
-            - name: "Defining lerna scope"
-              uses: jungwinter/split@v1
-              id: scope
-              with:
-                  msg: "${{ steps.variables.outputs.tag }}"
-                  seperator: "-v"
             - name: "Installing dependencies"
               run: npm install
             - name: "Build and publish pluggale widget ${{ steps.variables.outputs.tag }}"
               run:
-                  "npm run release -- --scope '${{ steps.scope.outputs._0 }}'"
+                  "npm run build"
             - name: "Release MPK Files"
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
@@ -46,4 +40,4 @@ jobs:
                   prerelease: false
                   title: "MPK Files"
                   files: |
-                      packages/pluggableWidgets/${{ steps.scope.outputs._0 }}/dist/${{ steps.scope.outputs._1 }}/*.mpk
+                      dist/*.mpk
