@@ -9,7 +9,7 @@
     "node": ">=12"
   },
   "config": {
-    "projectPath": "C:/d/mendix/App_2/",
+    "projectPath": "./tests/testProject/",
     "mendixHost": "http://localhost:8080",
     "developmentPort": "3000"
   },

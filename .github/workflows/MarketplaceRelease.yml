@@ -40,4 +40,4 @@ jobs:
                   prerelease: false
                   title: "MPK Files"
                   files: |
-                      dist/*.mpk
+                      dist/*/*.mpk
