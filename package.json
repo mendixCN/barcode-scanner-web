@@ -1,7 +1,7 @@
 {
   "name": "barcodescanner",
   "widgetName": "BarcodeScanner",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "My widget description",
   "copyright": "2020 Mendix Technology BV",
   "author": "John",
@@ -9,7 +9,7 @@
     "node": ">=12"
   },
   "config": {
-    "projectPath": "./tests/testProject/",
+    "projectPath": "C:/d/mendix/App_2",
     "mendixHost": "http://localhost:8080",
     "developmentPort": "3000"
   },

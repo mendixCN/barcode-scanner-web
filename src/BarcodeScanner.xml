@@ -64,5 +64,15 @@
                 </property>
             </propertyGroup>
         </propertyGroup>
+        <propertyGroup caption="解码器">
+            <property key="offline" type="boolean" defaultValue="true">
+                <caption>离线解码</caption>
+                <description></description>
+            </property>
+            <property key="decodePath" type="string" required="false" multiline="false">
+                <caption>解码服务器地址</caption>
+                <description></description>
+            </property>
+        </propertyGroup>
     </properties>
 </widget>

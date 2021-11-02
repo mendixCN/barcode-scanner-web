@@ -1,14 +1,15 @@
 import { BarcodeScannerContainerProps } from "../typings/BarcodeScannerProps";
 import { Properties, StructurePreviewProps } from "./components/PageEditor";
-import { transformGroupsIntoTabs } from "./components/PageEditorUtils";
-
-
+import { hidePropertyIn, transformGroupsIntoTabs } from "./components/PageEditorUtils";
 
 export function getProperties(
-    _: BarcodeScannerContainerProps,
+    values: BarcodeScannerContainerProps,
     defaultProperties: Properties,
     platform: "web" | "desktop"
 ): Properties {
+    if (values.offline === true) {
+        hidePropertyIn(defaultProperties, values, "decodePath");
+    }
     if (platform === "web") {
         transformGroupsIntoTabs(defaultProperties);
     }

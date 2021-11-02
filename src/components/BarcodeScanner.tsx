@@ -1,9 +1,10 @@
-import { createElement, CSSProperties, ReactElement, ReactNode, useEffect, useRef } from "react";
+import { createElement, CSSProperties, ReactElement, ReactNode, useEffect, useMemo } from "react";
 import classNames from "classnames";
 import { useCodeScanner, CodeScannerHookError } from "../hooks/useCodeScanner";
-import { browserSupportsCameraAccess, useMediaStream, MediaStreamHookError } from "../hooks/useMediaStream";
+import { browserSupportsCameraAccess, MediaStreamHookError } from "../hooks/useMediaStream";
 
 import "../ui/BarcodeScanner.scss";
+let lastVideoId = 1;
 export type WidthUnitEnum = "percentage" | "pixels";
 
 export type HeightUnitEnum = "percentageOfWidth" | "pixels" | "percentageOfParent";
@@ -40,6 +41,8 @@ export interface BarcodeScannerProps extends Dimensions {
     onDetect?: (data: string) => void;
     showMask: boolean;
     class: string;
+    offline: boolean;
+    decodePath: string;
 }
 
 function getErrorMessage(errorEnum: MediaStreamHookError | CodeScannerHookError | null): string | null {
@@ -58,13 +61,13 @@ function getErrorMessage(errorEnum: MediaStreamHookError | CodeScannerHookError 
 
 interface BarcodeScannerOverlayProps extends Dimensions {
     showMask: boolean;
-    class: string;
+    className: string;
     children?: ReactNode;
 }
 
 export function BarcodeScannerOverlay({
     children,
-    class: className,
+    className: className,
     showMask,
     ...dimensions
 }: BarcodeScannerOverlayProps): ReactElement {
@@ -97,19 +100,13 @@ export function BarcodeScanner({
     onDetect,
     showMask,
     class: className,
+    offline,
+    decodePath,
     ...dimensions
 }: BarcodeScannerProps): ReactElement | null {
-    const videoElement = useRef<HTMLVideoElement | null>(null);
-    const { streamObject, error: errorMediaStream } = useMediaStream();
-    const { codeResult, error: errorCodeScanner } = useCodeScanner(streamObject, videoElement.current);
+    const videoId = useMemo(() => +new Date() + "-video" + lastVideoId++, []);
+    const { codeResult, error: errorCodeScanner } = useCodeScanner(videoId, offline, decodePath);
     const supportsCameraAccess = browserSupportsCameraAccess();
-
-    // If both the video element ref and the camera stream object are ready, display it through the `srcObject` prop.
-    useEffect(() => {
-        if (videoElement.current && streamObject) {
-            videoElement.current.srcObject = streamObject;
-        }
-    }, [streamObject]);
 
     // If we have an onDetect handler and a barcode has been scanned and it was the first detected code, trigger the onDetect handler.
     useEffect(() => {
@@ -131,23 +128,15 @@ export function BarcodeScanner({
             </span>
         );
     }
-    if ((errorMediaStream && errorMediaStream !== "ERROR_NOT_ALLOWED") || errorCodeScanner) {
-        const errorMessage = getErrorMessage(errorMediaStream || errorCodeScanner);
+    if (errorCodeScanner) {
+        const errorMessage = getErrorMessage(errorCodeScanner);
         if (errorMessage) {
             return <span>{errorMessage}</span>;
         }
     }
     return (
-        <BarcodeScannerOverlay class={className} showMask={showMask} {...dimensions}>
-            <video
-                className={classNames("video")}
-                ref={videoElement}
-                onCanPlay={event => {
-                    if (event.currentTarget.paused) {
-                        event.currentTarget.play();
-                    }
-                }}
-            />
+        <BarcodeScannerOverlay className={className} showMask={showMask} {...dimensions}>
+            <div id={videoId} className={classNames("video")} />
         </BarcodeScannerOverlay>
     );
 }

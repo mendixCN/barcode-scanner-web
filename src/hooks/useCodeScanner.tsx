@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BarcodeFormat, BrowserMultiFormatReader, DecodeHintType } from "@zxing/library";
 import { useInterval } from "ahooks";
+
+// @ts-ignore
+import webcam from "../webcam.js";
 
 const hints = new Map();
 // RSS_Expanded is not production ready yet.
@@ -14,30 +17,65 @@ hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
 export type CodeScannerHookError = "ERROR_CODE_SCANNER";
 
 type CodeScannerHook = (
-    streamObject: MediaStream | null,
-    videoElement: HTMLVideoElement | null
+    videoId: string,
+    offline: boolean,
+    decodePath: string
 ) => {
     codeResult: string | null;
     error: CodeScannerHookError | null;
 };
 
-export const useCodeScanner: CodeScannerHook = (streamObject, videoElement) => {
+const browserReader = new BrowserMultiFormatReader(hints, 2000);
+
+export const useCodeScanner: CodeScannerHook = (videoId, offline, decodePath) => {
     const [codeResult, setCodeResult] = useState<string | null>(null);
-    const [error, setError] = useState<"ERROR_CODE_SCANNER" | null>(null);
+    const [error] = useState<"ERROR_CODE_SCANNER" | null>(null);
+    const [delay, setDelay] = useState<null | number>(null);
 
-    useInterval(() => {
+    useEffect(() => {
+        webcam.on("load", () => {
+            setDelay(500);
+        });
+        webcam.attach(videoId);
+        return () => {
+            setDelay(null);
+            webcam.reset();
+        };
+    }, [videoId]);
 
-        if (streamObject && videoElement) {
-            const browserReader = new BrowserMultiFormatReader(hints, 2000);
-            browserReader.decodeOnceFromStream(streamObject, undefined).then(result => {
-                setCodeResult(result.getText())
-            }).catch((e) => {
-                console.log(e);
-                setError("ERROR_CODE_SCANNER");
-            }
-            );
-        }
-    }, 500, { immediate: false });
+    useInterval(
+        async () => {
+            await new Promise<void>(resolve => {
+                webcam.snap((dataUri: string) => {
+                    if (offline) {
+                        const previewElem = document.querySelector(`[id='${videoId}'] video`) as HTMLVideoElement;
+                        if (previewElem) {
+                            browserReader
+                                .decodeFromImageUrl(dataUri)
+                                .then(result => {
+                                    if (result) {
+                                        setCodeResult(result.getText());
+                                    }
+                                    resolve();
+                                })
+                                .catch(() => {
+                                    resolve();
+                                });
+                        }
+                    } else {
+                        webcam.upload(dataUri, decodePath, (code: number, text: string) => {
+                            if (code >= 200 && code < 300) {
+                                setCodeResult(text);
+                            }
+                            resolve();
+                        });
+                    }
+                });
+            });
+        },
+        delay,
+        { immediate: false }
+    );
 
     return { codeResult, error };
 };

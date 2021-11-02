@@ -22,6 +22,8 @@ export interface BarcodeScannerContainerProps {
     width: number;
     heightUnit: HeightUnitEnum;
     height: number;
+    offline: boolean;
+    decodePath: string;
 }
 
 export interface BarcodeScannerPreviewProps {
@@ -34,4 +36,6 @@ export interface BarcodeScannerPreviewProps {
     width: number | null;
     heightUnit: HeightUnitEnum;
     height: number | null;
+    offline: boolean;
+    decodePath: string;
 }
