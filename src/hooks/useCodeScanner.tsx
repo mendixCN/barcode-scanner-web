@@ -5,6 +5,17 @@ import { useInterval } from "ahooks";
 // @ts-ignore
 import webcam from "../webcam.js";
 
+webcam.set( 'constraints', {
+		mandatory: {
+			minWidth: 500,
+			minHeight: 500,
+			minFrameRate: 20
+		},
+		optional: [
+			{ minFrameRate: 30 }
+		]
+});
+
 const hints = new Map();
 // RSS_Expanded is not production ready yet.
 const exclusions: BarcodeFormat[] = [BarcodeFormat.RSS_EXPANDED];
