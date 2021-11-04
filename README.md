@@ -1,3 +1,5 @@
+## 基于
+- [https://github.com/jhuckaby/webcamjs/blob/master/DOCS.md](https://github.com/jhuckaby/webcamjs/blob/master/DOCS.md)
 ## BarcodeScanner
 [My widget description]
 
