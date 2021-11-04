@@ -1,5 +1,7 @@
 ## 基于
 - [https://github.com/jhuckaby/webcamjs/blob/master/DOCS.md](https://github.com/jhuckaby/webcamjs/blob/master/DOCS.md)
+## 文档
+- [https://forum.mendix.tencent-cloud.com/info/0ea6f7e828c84739a245b4249ce35799](https://forum.mendix.tencent-cloud.com/info/0ea6f7e828c84739a245b4249ce35799)
 ## BarcodeScanner
 [My widget description]
 
