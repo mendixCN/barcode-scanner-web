@@ -16,6 +16,7 @@
   "packagePath": "cn",
   "scripts": {
     "start": "pluggable-widgets-tools start:server --open",
+    "proxy": "local-ssl-proxy -s 443 -t 3000",
     "dev": "pluggable-widgets-tools start:web",
     "build": "pluggable-widgets-tools build:web",
     "lint": "pluggable-widgets-tools lint",

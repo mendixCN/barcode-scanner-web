@@ -5,15 +5,12 @@ import { useInterval } from "ahooks";
 // @ts-ignore
 import webcam from "../webcam.js";
 
-webcam.set( 'constraints', {
-		mandatory: {
-			minWidth: 500,
-			minHeight: 500,
-			minFrameRate: 20
-		},
-		optional: [
-			{ minFrameRate: 30 }
-		]
+//https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices/getUserMedia
+webcam.set('constraints', {
+    // facingMode: "user",
+    facingMode: "environment"
+    // facingMode: { exact: "environment" }
+    // facingMode: { exact: "user" },
 });
 
 const hints = new Map();
