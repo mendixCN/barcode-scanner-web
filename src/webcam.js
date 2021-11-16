@@ -6,7 +6,7 @@
 // Copyright (c) 2012 - 2019 Joseph Huckaby
 // Licensed under the MIT License
 
-(function(window) {
+(function (window) {
     let _userMedia;
 
     // declare error types
@@ -27,7 +27,7 @@
         this.message = temp.message;
     }
 
-    const IntermediateInheritor = function() {};
+    const IntermediateInheritor = function () { };
     IntermediateInheritor.prototype = Error.prototype;
 
     FlashError.prototype = new IntermediateInheritor();
@@ -84,14 +84,14 @@
                 navigator.mediaDevices && navigator.mediaDevices.getUserMedia
                     ? navigator.mediaDevices
                     : navigator.mozGetUserMedia || navigator.webkitGetUserMedia
-                    ? {
-                          getUserMedia(c) {
-                              return new Promise((y, n) => {
-                                  (navigator.mozGetUserMedia || navigator.webkitGetUserMedia).call(navigator, c, y, n);
-                              });
-                          }
-                      }
-                    : null;
+                        ? {
+                            getUserMedia(c) {
+                                return new Promise((y, n) => {
+                                    (navigator.mozGetUserMedia || navigator.webkitGetUserMedia).call(navigator, c, y, n);
+                                });
+                            }
+                        }
+                        : null;
 
             window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
             this.userMedia = this.userMedia && !!this.mediaDevices && !!window.URL;
@@ -177,10 +177,10 @@
                             if (valueType != 3 && numValues != 1) {
                                 console.log(
                                     "Invalid EXIF orientation value type (" +
-                                        valueType +
-                                        ") or count (" +
-                                        numValues +
-                                        ")"
+                                    valueType +
+                                    ") or count (" +
+                                    numValues +
+                                    ")"
                                 );
                                 return 0;
                             }
@@ -346,15 +346,15 @@
                     .getUserMedia({
                         audio: false,
                         video: this.params.constraints || {
-                            mandatory: {
-                                minWidth: this.params.dest_width,
-                                minHeight: this.params.dest_height
-                            }
+                            // mandatory: {
+                            //     minWidth: this.params.dest_width,
+                            //     minHeight: this.params.dest_height
+                            // }
                         }
                     })
                     .then(stream => {
                         // got access, attach stream to video
-                        video.onloadedmetadata = function(e) {
+                        video.onloadedmetadata = function (e) {
                             self.stream = stream;
                             self.loaded = true;
                             self.live = true;
@@ -471,7 +471,7 @@
                             const http = new XMLHttpRequest();
                             http.open("GET", objURL, true);
                             http.responseType = "blob";
-                            http.onload = function(e) {
+                            http.onload = function (e) {
                                 if (this.status == 200 || this.status === 0) {
                                     fileReader.readAsArrayBuffer(this.response);
                                 }
@@ -683,7 +683,7 @@
                             hasFlash = true;
                         }
                     }
-                } catch (e) {}
+                } catch (e) { }
             }
 
             return hasFlash;
@@ -960,7 +960,7 @@
             }
 
             // create inline function, called after image load (flash) or immediately (native)
-            const func = function() {
+            const func = function () {
                 // render image if needed (flash)
                 if (this.src && this.width && this.height) {
                     context.drawImage(this, 0, 0, params.dest_width, params.dest_height);
@@ -1016,7 +1016,7 @@
                 var img = document.getElementById(this.container.id + "-ios_img");
                 const input = document.getElementById(this.container.id + "-ios_input");
                 // function for handle snapshot event (call user_callback and reset the interface)
-                iFunc = function(event) {
+                iFunc = function (event) {
                     func.call(img);
                     img.removeEventListener("load", iFunc);
                     div.style.backgroundImage = "none";
@@ -1089,14 +1089,14 @@
             return nChr > 64 && nChr < 91
                 ? nChr - 65
                 : nChr > 96 && nChr < 123
-                ? nChr - 71
-                : nChr > 47 && nChr < 58
-                ? nChr + 4
-                : nChr === 43
-                ? 62
-                : nChr === 47
-                ? 63
-                : 0;
+                    ? nChr - 71
+                    : nChr > 47 && nChr < 58
+                        ? nChr + 4
+                        : nChr === 43
+                            ? 62
+                            : nChr === 47
+                                ? 63
+                                : 0;
         },
 
         base64DecToArr(sBase64, nBlocksSize) {
@@ -1157,7 +1157,7 @@
 
             // completion handler
             const self = this;
-            http.onload = function() {
+            http.onload = function () {
                 if (callback) {
                     callback.apply(self, [http.status, http.responseText, http.statusText]);
                 }

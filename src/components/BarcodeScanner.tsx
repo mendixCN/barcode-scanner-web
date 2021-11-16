@@ -116,16 +116,12 @@ export function BarcodeScanner({
     }, [codeResult, onDetect]);
 
     if (!supportsCameraAccess) {
-        // Mendix ensures that Mendix apps are only run in the supported browsers and all of them
-        // support the `navigator.mediaDevices.getUserMedia` API. So no additional error handling
-        // needs to be done, but just in case we soft catch it.
+        if (location.protocol !== 'https:') {
+            return (<span>请使用https发布应用才能使用扫码功能</span>)
+        }
+
         return (
-            <span>
-                The barcode scanner widget is only compatible with certain browsers and requires a secure HTTPS
-                connection in certain browsers. If you encounter this error message as an user, please contact your
-                system administrator. If you are a Mendix developer, please refer to the appropriate docs on how to
-                resolve this issue.
-            </span>
+            <span>浏览器版本较低！！！扫码功能无法使用！！！</span>
         );
     }
     if (errorCodeScanner) {
