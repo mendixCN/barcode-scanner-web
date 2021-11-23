@@ -1,7 +1,7 @@
 {
   "name": "barcodescanner",
   "widgetName": "BarcodeScanner",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "My widget description",
   "copyright": "2020 Mendix Technology BV",
   "author": "John",
@@ -16,6 +16,7 @@
   "packagePath": "cn",
   "scripts": {
     "start": "pluggable-widgets-tools start:server --open",
+    "proxy": "local-ssl-proxy -s 443 -t 3000",
     "dev": "pluggable-widgets-tools start:web",
     "build": "pluggable-widgets-tools build:web",
     "lint": "pluggable-widgets-tools lint",
