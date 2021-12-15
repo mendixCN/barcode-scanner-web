@@ -13,6 +13,11 @@ webcam.set('constraints', {
     // facingMode: { exact: "user" },
 });
 
+// webcam.set({
+//     dest_width: 320,
+//     dest_height: 240
+// });
+
 const hints = new Map();
 // RSS_Expanded is not production ready yet.
 const exclusions: BarcodeFormat[] = [BarcodeFormat.RSS_EXPANDED];

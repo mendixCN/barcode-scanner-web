@@ -71,7 +71,7 @@
             </property>
             <property key="decodePath" type="string" required="false" multiline="false">
                 <caption>解码服务器地址</caption>
-                <description></description>
+                <description>服务器代码参考 https://github.com/engalar/qrcode  如果是示例则填入 host:port/decode</description>
             </property>
         </propertyGroup>
     </properties>
